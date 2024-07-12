@@ -28,8 +28,11 @@ def scrape_kabum(url="https://www.kabum.com.br/hardware/processadores/intel"):
 
     products = []
     for article in soup.find_all("article"):
-        name = article.find("div", class_="sc-9d1f1537-15 JuCPR").text.strip()
-        price = article.find("span", class_="sc-b1f5eb03-2 iaiQNF priceCard").text.strip()
+        name_tag = article.find("div", class_="sc-9d1f1537-15 JuCPR")
+        price_tag = article.find("span", class_="sc-b1f5eb03-2 iaiQNF priceCard")
+
+        name = name_tag.text.strip() if name_tag else "Nome não disponível"
+        price = price_tag.text.strip() if price_tag else "Preço não disponível"
         products.append({"Nome": name, "Preço": price})
 
     return pd.DataFrame(products)
